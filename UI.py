@@ -1,4 +1,4 @@
-import cv2, numpy as np, matplotlib.pyplot as plt
+import numpy as np, matplotlib.pyplot as plt
 from tkinter import *
 from PIL import Image, ImageTk
 import global_vars
@@ -18,18 +18,28 @@ def GUI(dim1, dim2):
     # event handler for button click
     def button_click():
         global image
+        global curr_index
+        green_box=False
         textbox_val=int(tb.get())
         global_vars.field[global_vars.next_loc]=textbox_val
         write_on_canvas(global_vars.next_loc[0], global_vars.next_loc[1], str(textbox_val)) 
         algorithm.fetch_next()
+        if np.array_equal(global_vars.next_loc, (-1,-1)):
+            canvas.create_text(image.size[0]/2, image.size[1]/2, font = ("Purisa", int(0.3*image.size[1])),text="SUCCESS!", fill = "blue")
+            green_box=True
+            for loc in np.arange(global_vars.dim1*global_vars.dim2):
+                if loc not in global_vars.explored:
+                    global_vars.field[global_vars.actual_index(loc)]=99
+                
         if textbox_val == -1:
             green_box=True
-        else:
-            green_box=False
-        image=global_vars.image_from_array(global_vars.field, green_box) 
-        resize_image()
-        if textbox_val == -1:
             canvas.create_text(image.size[0]/2, image.size[1]/2, font = ("Purisa", int(0.3*image.size[1])),text="GAME\nOVER", fill = "red")
+        image=global_vars.image_from_array(global_vars.field, green_box) 
+        redraw_img()
+            
+
+            
+        curr_index.set("Current Mine Field index: row = "+str(global_vars.next_loc[0])+" column="+str(global_vars.next_loc[1]))
     # draw lines on canvas
     def redraw_lines():
         global lines
@@ -43,15 +53,18 @@ def GUI(dim1, dim2):
             coords=0,i*image.size[1]/global_vars.dim1,image.size[0],i*image.size[1]/global_vars.dim1
             lines.append(canvas.create_line(coords))
         canvas.update()
+    
+    def redraw_img():
+        global image
+        image=image.resize((canvas.winfo_width(), canvas.winfo_height()))
+        photo.paste(image)
             
     # needed for basic functionality of the UI
     def resize_image(event= None):
         canvas.update()
-        global image
+        
+        redraw_img()
         global numbers
-        global curr_index
-        image=image.resize((canvas.winfo_width(), canvas.winfo_height()))
-        photo.paste(image)
         redraw_lines()
         numbers_copy=numbers.copy()
         for number_no,number in enumerate(numbers_copy):
@@ -60,8 +73,6 @@ def GUI(dim1, dim2):
         try:
             numbers=numbers[len(numbers)/2:]
         except: pass
-        curr_index.set("Current Mine Field index: row = "+str(global_vars.next_loc[0])+" column="+str(global_vars.next_loc[1]))
-
 
     global_vars.initialize_vals(dim1,dim2)
     
@@ -77,7 +88,7 @@ def GUI(dim1, dim2):
     curr_index=StringVar()
     
     # create image from minefield array
-    global_vars.generate_field(global_vars.dim1,global_vars.dim2,global_vars.p)
+    global_vars.generate_field(global_vars.dim1,global_vars.dim2)
     # add a canvas to the UI to draw the image on
     canvas=Canvas(root)
     canvas.grid(row=0, column=0, columnspan=3, sticky=N+S+W+E)
@@ -114,4 +125,6 @@ def GUI(dim1, dim2):
     #start the GUI and its event handlers
     print("\n\n----------------")
     print ("GUI STARTED")
+    
+
     root.mainloop()

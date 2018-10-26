@@ -1,0 +1,31 @@
+
+
+DIM: 8 X 8  P: 0.1  Mine count: 5.762
+Nonadaptive p=0.5 Explored : 58.164  Success : 0.511
+Nonadaptive p=0.3 Explored : 58.19  Success : 0.517
+Adaptive Explored : 58.19  Success : 0.52
+Special case Explored : 54.712  Success : 0.344
+
+DIM: 8 X 8  P: 0.15000000000000002  Mine count: 8.388
+Nonadaptive p=0.5 Explored : 54.974  Success : 0.493
+Nonadaptive p=0.3 Explored : 55.132  Success : 0.517
+Adaptive Explored : 55.302  Success : 0.519
+Special case Explored : 49.088  Success : 0.262
+
+DIM: 8 X 8  P: 0.20000000000000004  Mine count: 11.0
+Nonadaptive p=0.5 Explored : 50.186  Success : 0.423
+Nonadaptive p=0.3 Explored : 50.37  Success : 0.459
+Adaptive Explored : 50.17  Success : 0.455
+Special case Explored : 41.378  Success : 0.152
+
+DIM: 8 X 8  P: 0.25000000000000006  Mine count: 14.082
+Nonadaptive p=0.5 Explored : 43.898  Success : 0.349
+Nonadaptive p=0.3 Explored : 44.348  Success : 0.393
+Adaptive Explored : 42.23  Success : 0.321
+Special case Explored : 33.552  Success : 0.065
+
+DIM: 8 X 8  P: 0.30000000000000004  Mine count: 16.104
+Nonadaptive p=0.5 Explored : 38.86  Success : 0.263
+Nonadaptive p=0.3 Explored : 39.288  Success : 0.297
+Adaptive Explored : 35.58  Success : 0.213
+Special case Explored : 29.488  Success : 0.037

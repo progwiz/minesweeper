@@ -1,166 +1,112 @@
-# this file defines the basic algorithm which is used to find the next node which should be revealed.
-
-# all lists and other data structures are stored in file global_vars 
-# all data needed by both the UI and the algorithm are in global_vars
-import global_vars as g
+import numpy as np
 import itertools
+import global_vars as g
 
-
-# this function combines the sets of possible combinations that decides if a vertex can be a mine
-def intersect_combinations(combination_set1,combination_set2):
-    # locs are the set of nodes that effect the probability of a node being a mine
-    # c1, c2 are the combinations of these nodes that can all be mines.
-    locs1,c1=combination_set1
-    locs2,c2=combination_set2
-    locs_inter = list(set(locs1) & set(locs2))
-    final_locs = list(set(locs1).union(set(locs2)))
-    final_combinations = []
-    flag=0
-    # find common nodes between the two sets and combine the combinations that contain these nodes.
-    for i in range(len(locs_inter),0,-1):
-        combinations_i=[]
-        locs_inter_combinations=itertools.combinations(locs_inter,i)
-        for locs_inter_combination in locs_inter_combinations:
-            first_set=[]
-            second_set=[]
-            c1_temp=[]
-            c2_temp=[]
-            for combination_no,combination in enumerate(c1):
-                if len(list(set(combination) & set(locs_inter_combination))) == i:
-                    first_set.append(combination)
-                else:
-                    c1_temp.append(combination)
-            for combination_no,combination in enumerate(c2):
-                if len(list(set(combination) & set(locs_inter_combination))) == i:
-                    second_set.append(combination)
-                else:
-                    c2_temp.append(combination)
-            for j in first_set:
-                for k in second_set:
-                    flag=1
-                    combinations_i.append(list(set(j).union(set(k))))
-            c1=c1_temp
-            c2=c2_temp
-        final_combinations+=combinations_i
-        
-    # if flag is 0, the two sets have no combinations with same set of nodes that effect them.
-    if not(flag):
-        if len(c1)==0: c1=[[]]
-        if len(c2)==0: c2=[[]]
-    for i in c1:
-            for j in c2:
-                    union=list(set(i).union(set(j)))
-                    if len(union):  final_combinations.append(union)
-    return [final_locs, final_combinations]
-    
-# returns the manhattan distance 
-# the distance helps in propogating the changes to probabilities radially outward from the revealed node.
-def manhattan_dist(p1,p2):
-    x1,y1=p1
-    x2,y2=p2
-    return abs(x1-x2)+abs(y1-y2)
+def combine_combinations(new_locs,set1,current_locs,set2):
+    common_locs=list(set(current_locs) & set(new_locs))
+    final_locs=list(set(current_locs).union(set(new_locs)))
+    new_set=[]
+    for c1 in set1:
+        c1_common_locs=[loc for loc in c1 if loc in common_locs]
+        for c2 in set2:
+            c2_common_locs=[loc for loc in c2 if loc in common_locs]
+            if set(c1_common_locs) == set(c2_common_locs):
+                new_set.append(list(set(c1).union(set(c2))))
+    return final_locs,new_set
 
 # returns location of neighbors of a node.
-def get_neighbors(x,y):
+def get_neighbors(loc):
+    x,y = loc
     nbrs=[]
     for dx,dy in [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]:
         if -1<x+dx<g.dim1 and -1<y+dy<g.dim2:
             nbrs.append((x+dx,y+dy))
     return nbrs
 
-# This function is used to compute the index of the next cell that is to be revealed
-# The field itself is stored in g.field variable
-# The next location should be updated to g.next_loc
-def fetch_next(debug=True):
-    prev_loc=g.next_loc
+def fetch_next(adaptive=False,debug=True, chains=False):
     
-    # if the revelaed cell is a mine, game over
+    prev_loc=g.next_loc
+    #print(g.field[prev_loc], prev_loc)
+    # if mine revealed, game over
     if g.field[prev_loc]==-1:
-        return (0,0)
-
-    # change probability of revealed cell being a mine to 0.
+        g.next_loc=(0,0)
+        return
+    
+    # make probability of releaved cell 0
     g.probs[prev_loc]=0
     
-    # change this value to the node which is not being updated as expected to debug.
-    invalid_node=5
-    
-    # add the revealed cell to list of explored nodes and remove from fringe list, seen neighbors list
+    # add revealed cell to explored, remove from fringe, seen_nbrs
     g.explored.append(g.flat_index(prev_loc))
     g.fringe.remove(g.flat_index(prev_loc))
+    g.clear=list(set(g.clear).union(set([g.flat_index(prev_loc)])))
     if g.flat_index(prev_loc) in g.seen_nbrs:
         g.seen_nbrs.remove(g.flat_index(prev_loc))
-        
-    # update all elements whose combinations depended on the revealed cell
-    for location, combination_set in g.combinations.items():
-        if g.flat_index(prev_loc) in combination_set[0]:
-            combination_set[0].remove(g.flat_index(prev_loc))
-            g.combinations[location]=[combination_set[0],[combination for combination in combination_set[1] if g.flat_index(prev_loc) not in combination]]
-            location_event_count=len([c for c in g.combinations[location][1] if location in c])
-            try:
-                g.probs[g.actual_index(location)]=location_event_count/len(combination_set[1])
-            except: g.probs[g.actual_index(location)]=0
-    
-    # get set of unexplored neighbors
-    nbrs=get_neighbors(prev_loc[0],prev_loc[1])
-    unexplored_nbrs=[g.flat_index(nbr) for nbr in nbrs if g.flat_index(nbr) not in g.explored]
 
-    # add unexplored neighbors to seen and fringe
-    g.seen_nbrs= list(set(g.seen_nbrs).union(set(unexplored_nbrs)))
-    g.fringe=list(set(g.fringe).union(set(unexplored_nbrs)))
+    # update set of combinations and locations used to make the combinations.
+    if g.flat_index(prev_loc) in g.locs:
+        g.locs.remove(g.flat_index(prev_loc))
+    g.combs=[c for c in g.combs if g.flat_index(prev_loc) not in c]
     
-    # sort the seen neighbors radially outward.
-    g.seen_nbrs=sorted(g.seen_nbrs, key=lambda x:manhattan_dist(prev_loc,g.actual_index(x)))
+
+    # get set of unexplored neighbors
+    nbrs=get_neighbors(prev_loc)
+    unexplored_nbrs=[g.flat_index(nbr) for nbr in nbrs if g.flat_index(nbr) not in g.explored]
     
-    # add neighbors of neighbors to fringe
+    if chains:
+        undecided_nbrs=[g.actual_index(nbr) for nbr in unexplored_nbrs if 0<g.probs[g.actual_index(nbr)]<1]
+        decided_nbrs=[nbr for nbr in nbrs if g.probs[nbr] in (0,1)]
+        decided_mines=[nbr for nbr in decided_nbrs if g.probs[nbr]==1]
+        decided_clear=[nbr for nbr in decided_nbrs if g.probs[nbr]==0]
+        if g.field[prev_loc]==len(decided_mines):
+            decided_nbrs=[nbr for nbr in decided_nbrs if nbr not in decided_clear]
+        elif g.field[prev_loc]==8-len(decided_clear):
+            decided_nbrs=[nbr for nbr in decided_nbrs if nbr not in decided_mines]
+        for nbr in undecided_nbrs:
+            g.parent_dict[nbr]=list(set(g.parent_dict[nbr]).union(set([prev_loc])))
+        for nbr1 in decided_nbrs:
+            for nbr2 in undecided_nbrs:
+                g.parent_dict[nbr2]=list(set(g.parent_dict[nbr2]).union(set([nbr1])))
+        
+    # add unexplored neighbors to seen nbrs and fringe
+    g.seen_nbrs=set(g.seen_nbrs).union(set(unexplored_nbrs))
+    g.fringe=set(g.fringe).union(set(unexplored_nbrs))
+    
+    # add neighbors of unexplored neighbors to fringe
     for nbr in unexplored_nbrs:
-        nbrs_nbr=get_neighbors(g.actual_index(nbr)[0],g.actual_index(nbr)[1])
-        nbrs_nbr=[g.flat_index(n) for n in nbrs_nbr if g.flat_index(n) not in g.explored]
-        g.fringe=list(set(g.fringe).union(set(nbrs_nbr)))
+        nbr_nbrs=[g.flat_index(n) for n in get_neighbors(g.actual_index(nbr)) if g.flat_index(n) not in g.explored]
+        g.fringe=set(g.fringe).union(set(nbr_nbrs))
     
-    #update allowed combinations for neighbors based on the revealed node.
-    if debug:   print("currently exploring:", prev_loc)
-    new_combination_set=[unexplored_nbrs,list(itertools.combinations(unexplored_nbrs,g.field[prev_loc]))]
-    if debug:   print(len(new_combination_set[1]))
-    if not(len(new_combination_set[1])):
-        new_combination_set=[new_combination_set[0],[[]]]
-    if debug:   print(len(new_combination_set[1]))
-    for nbr in unexplored_nbrs:
-        if debug:
-            if nbr==invalid_node:
-                print("old combinations for invalid")
-                print(g.combinations[nbr])
-        g.combinations[nbr]=intersect_combinations(g.combinations[nbr],new_combination_set)
-        location_event_count=len([c for c in g.combinations[nbr][1] if nbr in c])
-        try:
-            g.probs[g.actual_index(nbr)]=location_event_count/len(g.combinations[nbr][1])
-        except: g.probs[g.actual_index(nbr)]=0
-        if debug:
-            if nbr==invalid_node:
-                print("mid combinations for invalid")
-                print(g.combinations[nbr])
-    
-    # propogate the changes radially outward.
-    for nbr1 in g.seen_nbrs:
-        nbr1_nbrs=get_neighbors(g.actual_index(nbr1)[0],g.actual_index(nbr1)[1])
-        nbr1_nbrs=[g.flat_index(n) for n in nbr1_nbrs if g.flat_index(n) in g.seen_nbrs]
-        for nbr2 in nbr1_nbrs:
-            if debug:
-                if nbr1==invalid_node:
-                    print(nbr2)
-            g.combinations[nbr1]=intersect_combinations(g.combinations[nbr1],g.combinations[nbr2])
-        location_event_count=len([c for c in g.combinations[nbr1][1] if nbr1 in c])
-        try:
-            g.probs[g.actual_index(nbr1)]=location_event_count/len(g.combinations[nbr1][1])
-        except: g.probs[g.actual_index(nbr1)]=0
-        if debug:
-            if nbr1==invalid_node:
-                print("new combinations for invalid")
-                print(g.combinations[nbr1])            
-    
-    if debug:
-        for x in range(g.dim1):
-            for y in range(g.dim2):
-                print("p",(x,y),": ",g.probs[x,y])
+    # this condition is used while solving for special case
+    if g.field[prev_loc]!=-2:
+        
+        # get combinations of unexplored neighbors
+        new_combinations=list(itertools.combinations(unexplored_nbrs,g.field[prev_loc]))
+        """
+        print("new combinations:")
+        for c in new_combinations:
+            if 12 in c and 7 in c:
+                print(c)
+        """
+        
+        # combine old and new set of combinations
+        g.locs,g.combs=combine_combinations(unexplored_nbrs,new_combinations,g.locs,g.combs)
+        
+        # update probabilities of all nodes
+        for loc in g.locs:
+            loc_1_count=len([c for c in g.combs if loc in c])
+            try:
+                g.probs[g.actual_index(loc)]=loc_1_count/len(g.combs)
+            except:
+                g.probs[g.actual_index(loc)]=0
+    if chains:
+        new_determined_nodes=[g.actual_index(node) for node in np.arange(g.dim1*g.dim2) if node not in g.mines+g.clear and g.probs[g.actual_index(node)] in [0,1]]
+        #print("\n\n ", new_determined_nodes)
+        for node in new_determined_nodes:
+            for parent in get_neighbors(node):
+                if parent in g.explored:
+                    nbrs=[nbr for nbr in get_neighbors(parent) if 0<g.probs[nbr]<1]
+                    for nbr in nbrs:
+                        g.parent_dict[nbr]= list(set(g.parent_dict[nbr]).union(set([node])))
     
     #find node with minimum probability of being a mine, definite mines, definite clear cells
     minimum=1.1
@@ -169,25 +115,23 @@ def fetch_next(debug=True):
         actual_loc=g.actual_index(flat_loc)
         p=g.probs[actual_loc]
         if p==1:
-            g.mines.append(flat_loc)
+            g.mines=list(set(g.mines).union(set([flat_loc])))
+        if p==0:
+            g.clear=list(set(g.clear).union(set([flat_loc])))
         if p<minimum:
             minimum=p
             minimum_set=[flat_loc]
         elif p==minimum:
             minimum_set.append(flat_loc)
-    
-    # if p=0, add item to clear mines
-    if not(minimum):
-        g.clear.append(flat_loc)
-    
-    # select the item with minimum prob which has the max number of seen neighbors
+        
+    # select the item wpith minimum prob which has the max number of seen neighbors
     # if 2 ore more such nodes exist, select one with the least number of unknown neighbors (happens only on boundaries of the field.)
     if len(minimum_set):
         max_nbr_count=-1
         max_item=minimum_set[0]
         min_count=9 
         for item in minimum_set:
-            item_nbrs=get_neighbors(g.actual_index(item)[0], g.actual_index(item)[1])
+            item_nbrs=get_neighbors(g.actual_index(item))
             nbrs_intersection_size=len(list(set(item_nbrs).union(set(g.fringe))))
             nbrs_disjoint_size=len(item_nbrs)-nbrs_intersection_size
             if nbrs_intersection_size>max_nbr_count:
@@ -199,13 +143,24 @@ def fetch_next(debug=True):
                     min_count=nbrs_disjoint_size
                     max_item=item
     
+    if adaptive:
+        if len(g.explored)>=3:
+            expected_mine_count=np.mean([len(c) for c in g.combs])/len(g.combs)
+            explored_cell_count=len(g.explored)+len(g.seen_nbrs)
+            mine_probability=expected_mine_count/explored_cell_count
+            for loc in np.arange(g.dim1*g.dim2):
+                if loc not in g.explored and loc not in g.seen_nbrs:
+                    g.probs[g.actual_index(loc)]=mine_probability
+    
+
+    
     # if the minimum encountered probability is 1, then only mines remain unrevealed.
     if minimum==1:
-        print("-------------------\nMaze successfully solved!!! \n All unexplored cells are expected to be mines.")
-        g.next_loc=(0,0)
-        
-    if debug:    
-        print("seen nbrs:", g.seen_nbrs)
-        print("fringe:", g.fringe)
-        
-    g.next_loc=(g.actual_index(max_item)[0], g.actual_index(max_item)[1])
+        #print("-------------------\nMaze successfully solved!!! \n All unexplored cells are expected to be mines.")
+        g.next_loc=(-1,-1)
+    else:
+        g.next_loc=(g.actual_index(max_item)[0], g.actual_index(max_item)[1])
+
+    
+    
+    

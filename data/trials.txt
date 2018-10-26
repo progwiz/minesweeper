@@ -1,0 +1,167 @@
+
+
+DIM: 5 X 5  P: 0.1  Mine count: 1.954
+Explored NA: 22.712  Success NA: 0.949
+Explored A: 22.972  Success A: 0.963
+
+DIM: 5 X 5  P: 0.15000000000000002  Mine count: 2.894
+Explored NA: 21.338  Success NA: 0.89
+Explored A: 21.817  Success A: 0.918
+
+DIM: 5 X 5  P: 0.20000000000000004  Mine count: 4.541
+Explored NA: 17.962  Success NA: 0.69
+Explored A: 18.309  Success A: 0.729
+
+DIM: 5 X 5  P: 0.25000000000000006  Mine count: 5.381
+Explored NA: 16.024  Success NA: 0.53
+Explored A: 16.212  Success A: 0.577
+
+DIM: 5 X 5  P: 0.30000000000000004  Mine count: 6.172
+Explored NA: 14.602  Success NA: 0.445
+Explored A: 13.717  Success A: 0.442
+
+DIM: 5 X 5  P: 0.3500000000000001  Mine count: 6.861
+Explored NA: 13.087  Success NA: 0.351
+Explored A: 12.617  Success A: 0.378
+
+DIM: 5 X 5  P: 0.40000000000000013  Mine count: 8.266
+Explored NA: 11.409  Success NA: 0.251
+Explored A: 9.978  Success A: 0.23
+
+DIM: 6 X 6  P: 0.1  Mine count: 2.912
+Explored NA: 32.607  Success NA: 0.967
+Explored A: 33.001  Success A: 0.996
+
+DIM: 6 X 6  P: 0.15000000000000002  Mine count: 4.698
+Explored NA: 29.149  Success NA: 0.846
+Explored A: 30.139  Success A: 0.924
+
+DIM: 6 X 6  P: 0.20000000000000004  Mine count: 6.424
+Explored NA: 25.599  Success NA: 0.7
+Explored A: 25.774  Success A: 0.748
+
+DIM: 6 X 6  P: 0.25000000000000006  Mine count: 7.978
+Explored NA: 21.937  Success NA: 0.502
+Explored A: 20.625  Success A: 0.518
+
+DIM: 6 X 6  P: 0.30000000000000004  Mine count: 8.761
+Explored NA: 20.357  Success NA: 0.403
+Explored A: 19.099  Success A: 0.429
+
+DIM: 6 X 6  P: 0.3500000000000001  Mine count: 10.189
+Explored NA: 16.936  Success NA: 0.273
+Explored A: 14.895  Success A: 0.264
+
+DIM: 6 X 6  P: 0.40000000000000013  Mine count: 11.541
+Explored NA: 14.145  Success NA: 0.163
+Explored A: 11.084  Success A: 0.126
+
+DIM: 7 X 7  P: 0.1  Mine count: 3.874
+Explored NA: 43.997  Success NA: 0.953
+Explored A: 44.874  Success A: 0.989
+
+DIM: 7 X 7  P: 0.15000000000000002  Mine count: 6.564
+Explored NA: 39.631  Success NA: 0.836
+Explored A: 40.432  Success A: 0.897
+
+DIM: 7 X 7  P: 0.20000000000000004  Mine count: 8.238
+Explored NA: 36.159  Success NA: 0.705
+Explored A: 35.152  Success A: 0.732
+
+DIM: 7 X 7  P: 0.25000000000000006  Mine count: 10.672
+Explored NA: 29.285  Success NA: 0.484
+Explored A: 26.469  Success A: 0.48
+
+DIM: 7 X 7  P: 0.30000000000000004  Mine count: 12.19
+Explored NA: 25.728  Success NA: 0.37
+Explored A: 21.402  Success A: 0.33
+
+DIM: 7 X 7  P: 0.3500000000000001  Mine count: 14.381
+Explored NA: 20.392  Success NA: 0.185
+Explored A: 14.928  Success A: 0.134
+
+DIM: 7 X 7  P: 0.40000000000000013  Mine count: 15.723
+Explored NA: 17.944  Success NA: 0.127
+Explored A: 11.766  Success A: 0.068
+
+DIM: 8 X 8  P: 0.1  Mine count: 5.785
+Explored NA: 56.484  Success NA: 0.941
+Explored A: 57.137  Success A: 0.969
+
+DIM: 8 X 8  P: 0.15000000000000002  Mine count: 8.428
+Explored NA: 51.51  Success NA: 0.84
+Explored A: 51.656  Success A: 0.871
+
+DIM: 8 X 8  P: 0.20000000000000004  Mine count: 10.999
+Explored NA: 45.217  Success NA: 0.665
+Explored A: 44.481  Success A: 0.701
+
+DIM: 8 X 8  P: 0.25000000000000006  Mine count: 14.166
+Explored NA: 37.169  Success NA: 0.449
+Explored A: 31.458  Success A: 0.391
+
+DIM: 8 X 8  P: 0.30000000000000004  Mine count: 16.523
+Explored NA: 28.752  Success NA: 0.24
+Explored A: 22.619  Success A: 0.193
+
+DIM: 8 X 8  P: 0.3500000000000001  Mine count: 18.623
+Explored NA: 24.806  Success NA: 0.147
+Explored A: 16.195  Success A: 0.081
+
+DIM: 10 X 10  P: 0.1  Mine count: 9.54
+Explored NA: 85.53  Success NA: 0.451
+Explored A: 81.866  Success A: 0.444
+
+DIM: 10 X 10  P: 0.15000000000000002  Mine count: 13.912
+Explored NA: 77.062  Success NA: 0.392
+Explored A: 76.766  Success A: 0.417
+
+DIM: 10 X 10  P: 0.1  Mine count: 9.61
+Explored NA: 89.812  Success NA: 0.509
+Explored A: 89.91  Success A: 0.513
+
+DIM: 10 X 10  P: 0.1  Mine count: 9.554
+Explored NA: 90.43  Success NA: 0.542
+Explored A: 90.256  Success A: 0.527
+
+DIM: 7 X 7  P: 0.1  Mine count: 4.0
+Nonadaptive p=0.5 Explored : 45.0  Success : 0.004
+Nonadaptive p=0.5 Explored : 45.0  Success : 0.004
+Adaptive Explored : 45.0  Success : 0.004
+Special case Explored : 43.75  Success : 0.002
+
+DIM: 7 X 7  P: 0.15000000000000002  Mine count: 6.0
+Nonadaptive p=0.5 Explored : 42.25  Success : 0.003
+Nonadaptive p=0.5 Explored : 43.0  Success : 0.005
+Adaptive Explored : 43.0  Success : 0.006
+Special case Explored : 26.25  Success : 0.0
+
+DIM: 7 X 7  P: 0.20000000000000004  Mine count: 8.25
+Nonadaptive p=0.5 Explored : 35.5  Success : 0.002
+Nonadaptive p=0.5 Explored : 39.5  Success : 0.003
+Adaptive Explored : 39.0  Success : 0.003
+Special case Explored : 32.0  Success : 0.0
+
+DIM: 7 X 7  P: 0.25000000000000006  Mine count: 10.5
+Nonadaptive p=0.5 Explored : 38.5  Success : 0.004
+Nonadaptive p=0.5 Explored : 38.5  Success : 0.004
+Adaptive Explored : 38.5  Success : 0.004
+Special case Explored : 25.25  Success : 0.001
+
+DIM: 7 X 7  P: 0.30000000000000004  Mine count: 12.25
+Nonadaptive p=0.5 Explored : 31.5  Success : 0.003
+Nonadaptive p=0.5 Explored : 31.5  Success : 0.003
+Adaptive Explored : 25.0  Success : 0.002
+Special case Explored : 22.5  Success : 0.001
+
+DIM: 7 X 7  P: 0.3500000000000001  Mine count: 14.75
+Nonadaptive p=0.5 Explored : 31.0  Success : 0.001
+Nonadaptive p=0.5 Explored : 28.25  Success : 0.001
+Adaptive Explored : 20.5  Success : 0.0
+Special case Explored : 22.0  Success : 0.0
+
+DIM: 7 X 7  P: 0.40000000000000013  Mine count: 16.0
+Nonadaptive p=0.5 Explored : 23.75  Success : 0.001
+Nonadaptive p=0.5 Explored : 24.5  Success : 0.002
+Adaptive Explored : 18.75  Success : 0.001
+Special case Explored : 13.75  Success : 0.0

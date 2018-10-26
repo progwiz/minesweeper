@@ -1,0 +1,46 @@
+
+
+DIM: 8 X 8  P: 0.1 Trials: 100  Mine count: 5
+Nonadaptive p=0.1 Explored : 52.69  Success : 0.89
+Nonadaptive p=0.2 Explored : 53.26  Success : 0.9
+Nonadaptive p=0.3 Explored : 51.02  Success : 0.86
+Nonadaptive p=0.4 Explored : 51.02  Success : 0.86
+Nonadaptive p=0.5 Explored : 50.99  Success : 0.85
+Adaptive Explored : 51.54  Success : 0.87
+Special case Explored : 49.98  Success : 0.69
+
+DIM: 8 X 8  P: 0.15000000000000002 Trials: 100  Mine count: 8
+Nonadaptive p=0.1 Explored : 44.61  Success : 0.78
+Nonadaptive p=0.2 Explored : 45.29  Success : 0.78
+Nonadaptive p=0.3 Explored : 43.38  Success : 0.73
+Nonadaptive p=0.4 Explored : 42.61  Success : 0.72
+Nonadaptive p=0.5 Explored : 42.48  Success : 0.69
+Adaptive Explored : 43.08  Success : 0.73
+Special case Explored : 35.51  Success : 0.32
+
+DIM: 8 X 8  P: 0.20000000000000004 Trials: 100  Mine count: 10
+Nonadaptive p=0.1 Explored : 40.55  Success : 0.66
+Nonadaptive p=0.2 Explored : 39.39  Success : 0.64
+Nonadaptive p=0.3 Explored : 37.86  Success : 0.62
+Nonadaptive p=0.4 Explored : 36.7  Success : 0.6
+Nonadaptive p=0.5 Explored : 37.0  Success : 0.6
+Adaptive Explored : 35.93  Success : 0.61
+Special case Explored : 33.37  Success : 0.27
+
+DIM: 8 X 8  P: 0.25000000000000006 Trials: 100  Mine count: 14
+Nonadaptive p=0.1 Explored : 28.45  Success : 0.35
+Nonadaptive p=0.2 Explored : 31.49  Success : 0.37
+Nonadaptive p=0.3 Explored : 31.21  Success : 0.41
+Nonadaptive p=0.4 Explored : 28.78  Success : 0.32
+Nonadaptive p=0.5 Explored : 27.79  Success : 0.26
+Adaptive Explored : 26.37  Success : 0.32
+Special case Explored : 22.25  Success : 0.04
+
+DIM: 8 X 8  P: 0.30000000000000004 Trials: 100  Mine count: 16
+Nonadaptive p=0.1 Explored : 22.7  Success : 0.2
+Nonadaptive p=0.2 Explored : 25.64  Success : 0.19
+Nonadaptive p=0.3 Explored : 22.67  Success : 0.17
+Nonadaptive p=0.4 Explored : 21.73  Success : 0.14
+Nonadaptive p=0.5 Explored : 21.02  Success : 0.13
+Adaptive Explored : 18.22  Success : 0.16
+Special case Explored : 17.18  Success : 0.04
