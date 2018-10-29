@@ -44,3 +44,12 @@ Nonadaptive p=0.4 Explored : 21.73  Success : 0.14
 Nonadaptive p=0.5 Explored : 21.02  Success : 0.13
 Adaptive Explored : 18.22  Success : 0.16
 Special case Explored : 17.18  Success : 0.04
+
+DIM: 10 X 10  P: 0.2 Trials: 5  Mine count: 18
+Nonadaptive p=0.1 Explored : 37.4  Success : 0.4
+Nonadaptive p=0.2 Explored : 49.8  Success : 0.6
+Nonadaptive p=0.3 Explored : 49.8  Success : 0.6
+Nonadaptive p=0.4 Explored : 34.4  Success : 0.4
+Nonadaptive p=0.5 Explored : 34.4  Success : 0.4
+Adaptive Explored : 34.6  Success : 0.4
+Special case Explored : 21.4  Success : 0.2

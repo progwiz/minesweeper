@@ -14,6 +14,11 @@ def combine_combinations(new_locs,set1,current_locs,set2):
                 new_set.append(list(set(c1).union(set(c2))))
     return final_locs,new_set
 
+def manhattan(p1,p2):
+    x1,y1=p1
+    x2,y2=p2
+    return (abs(x1-x2)+abs(y1-y2))
+
 # returns location of neighbors of a node.
 def get_neighbors(loc):
     x,y = loc
@@ -51,7 +56,7 @@ def fetch_next(adaptive=False,debug=True, chains=False):
     # get set of unexplored neighbors
     nbrs=get_neighbors(prev_loc)
     unexplored_nbrs=[g.flat_index(nbr) for nbr in nbrs if g.flat_index(nbr) not in g.explored]
-    
+    """
     if chains:
         undecided_nbrs=[g.actual_index(nbr) for nbr in unexplored_nbrs if 0<g.probs[g.actual_index(nbr)]<1]
         decided_nbrs=[nbr for nbr in nbrs if g.probs[nbr] in (0,1)]
@@ -66,7 +71,7 @@ def fetch_next(adaptive=False,debug=True, chains=False):
         for nbr1 in decided_nbrs:
             for nbr2 in undecided_nbrs:
                 g.parent_dict[nbr2]=list(set(g.parent_dict[nbr2]).union(set([nbr1])))
-        
+    """    
     # add unexplored neighbors to seen nbrs and fringe
     g.seen_nbrs=set(g.seen_nbrs).union(set(unexplored_nbrs))
     g.fringe=set(g.fringe).union(set(unexplored_nbrs))
@@ -98,7 +103,36 @@ def fetch_next(adaptive=False,debug=True, chains=False):
                 g.probs[g.actual_index(loc)]=loc_1_count/len(g.combs)
             except:
                 g.probs[g.actual_index(loc)]=0
+                
     if chains:
+        new_mcs=[g.actual_index(node) for node in np.arange(g.dim1*g.dim2) if g.probs[g.actual_index(node)] in [1,0] and node not in g.mines+g.clear]
+        for new_mc in new_mcs:
+            parent_sets=[]
+            new_mc_nbrs=sorted(get_neighbors(new_mc), key=lambda x:manhattan(x,prev_loc))
+            for new_mc_nbr in new_mc_nbrs:
+                if g.flat_index(new_mc_nbr) in g.explored:
+                    nbr_val=g.field[new_mc_nbr]
+                    if g.probs[new_mc]==1:
+                        req_size=8-nbr_val
+                    else:
+                        req_size=nbr_val
+                    useful_nbrs=[nbr for nbr in get_neighbors(new_mc_nbr) if g.probs[nbr]==1-g.probs[new_mc]]
+                    if len(useful_nbrs)==req_size:
+                        parent_sets.append([new_mc_nbr]+useful_nbrs)
+                        #g.parent_dict[new_mc]=list(set(g.parent_dict[new_mc]).union(set([new_mc_nbr])))
+                        #for useful_nbr in useful_nbrs:
+                        #g.parent_dict[new_mc]=list(set(g.parent_dict[new_mc]).union(set(useful_nbrs)))
+                        #break
+            g.parent_dict[new_mc]=parent_sets
+                        
+            if g.probs[new_mc]==1:
+                g.mines=list(set(g.mines).union(set([g.flat_index(new_mc)])))
+            else:
+                g.clear=list(set(g.clear).union(set([g.flat_index(new_mc)])))
+            #print(new_mc, g.parent_dict[new_mc])
+        
+        
+        """
         new_determined_nodes=[g.actual_index(node) for node in np.arange(g.dim1*g.dim2) if node not in g.mines+g.clear and g.probs[g.actual_index(node)] in [0,1]]
         #print("\n\n ", new_determined_nodes)
         for node in new_determined_nodes:
@@ -107,17 +141,19 @@ def fetch_next(adaptive=False,debug=True, chains=False):
                     nbrs=[nbr for nbr in get_neighbors(parent) if 0<g.probs[nbr]<1]
                     for nbr in nbrs:
                         g.parent_dict[nbr]= list(set(g.parent_dict[nbr]).union(set([node])))
-    
+        """
     #find node with minimum probability of being a mine, definite mines, definite clear cells
     minimum=1.1
     minimum_set=[]
     for flat_loc in g.fringe:
         actual_loc=g.actual_index(flat_loc)
         p=g.probs[actual_loc]
+        """
         if p==1:
             g.mines=list(set(g.mines).union(set([flat_loc])))
         if p==0:
             g.clear=list(set(g.clear).union(set([flat_loc])))
+        """
         if p<minimum:
             minimum=p
             minimum_set=[flat_loc]

@@ -1,6 +1,6 @@
 import numpy as np, matplotlib.pyplot as plt
 from tkinter import *
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageGrab
 import global_vars
 import algorithm
 
@@ -36,10 +36,18 @@ def GUI(dim1, dim2):
             canvas.create_text(image.size[0]/2, image.size[1]/2, font = ("Purisa", int(0.3*image.size[1])),text="GAME\nOVER", fill = "red")
         image=global_vars.image_from_array(global_vars.field, green_box) 
         redraw_img()
-            
-
-            
         curr_index.set("Current Mine Field index: row = "+str(global_vars.next_loc[0])+" column="+str(global_vars.next_loc[1]))
+
+        global count
+        count+=1
+        
+        canvas.update()
+        x=root.winfo_rootx()+canvas.winfo_x()
+        y=root.winfo_rooty()+canvas.winfo_y()
+        x1=x+canvas.winfo_width()
+        y1=y+canvas.winfo_height()
+        ImageGrab.grab().crop((x,y,x1,y1)).save("play-by-play/"+str(count)+".png")
+        
     # draw lines on canvas
     def redraw_lines():
         global lines
@@ -86,6 +94,8 @@ def GUI(dim1, dim2):
     lines=[]
     numbers=[]
     curr_index=StringVar()
+    global count
+    count=0
     
     # create image from minefield array
     global_vars.generate_field(global_vars.dim1,global_vars.dim2)

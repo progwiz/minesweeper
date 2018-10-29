@@ -30,5 +30,5 @@ def generate_random_field(dim1,dim2,p=0.1, display=True):
     return field
 
 if __name__ == "__main__":
-    generate_random_field(8,8,0.2)
+    generate_random_field(10,10,0.2)
     

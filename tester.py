@@ -26,10 +26,10 @@ if __name__ == "__main__":
     success_a=[]
     mine_counts=[]
     final_dict={}
-    trial_count=100
-    for dim in range(8,9):
+    trial_count=5
+    for dim in range(10,11):
         cell_count=dim*dim
-        for p in np.arange(0.1,0.32,0.05):
+        for p in np.arange(0.2,0.21,0.05):
             p_dict={}
             explored_counts_adaptive=[]
             explored_counts_nonadaptive1=[]
@@ -121,6 +121,7 @@ if __name__ == "__main__":
                         g.field[g.next_loc]=field[g.next_loc]
                     explored_len_nonadaptive5=len(g.explored)
                     if np.array_equal(g.next_loc,(-1,-1)):
+                        g.display_field(field,10,10,"random-field2.png")
                         flag5=1
                     
                     # solve for adaptive
